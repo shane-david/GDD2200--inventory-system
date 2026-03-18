@@ -22,7 +22,7 @@ public class TabHandler : MonoBehaviour
     //----------------------
 
     //build the dictionary for the gear tab as thats what the player will start on
-    private void Start()
+    private void Awake()
     {
         _playerInventory = new PlayerInventory(); 
     }
@@ -39,7 +39,7 @@ public class TabHandler : MonoBehaviour
         switch (tabName)
         {   
             //weapons and clothing section within the gear tab 
-            case "gear":
+            case "gear": 
                 _currentTab.Add(_playerInventory.GetWeaponSection(), _weaponSlots);
                 _currentTab.Add(_playerInventory.GetClothingSection(), _clothingSlots);  
                 break; 
