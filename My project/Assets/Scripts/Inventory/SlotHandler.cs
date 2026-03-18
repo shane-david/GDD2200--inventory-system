@@ -5,6 +5,10 @@ using UnityEngine.UI;
 public class SlotHandler : MonoBehaviour
 {
     
+    //variable set in the inspector representing the type of items
+    //that are stored in this group of slots
+    public string SlotSection; 
+
     public void BuildSlots(Inventory inventoryData)
     {   
         //get the list of items from the inventory 

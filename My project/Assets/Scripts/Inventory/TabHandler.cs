@@ -17,14 +17,24 @@ public class TabHandler : MonoBehaviour
     //key of Inventories in that tab to their respective slot handlers
     private Dictionary<Inventory, SlotHandler> _currentTab = new(); 
 
+    //dictionary from strings to all of the sections so that the tab handler
+    //knows wich tab to call the SwapItems method on 
+    private Dictionary<string, Inventory> _allSections = new(); 
+
     //----------------------
     //Unity Lifetime Methods
     //----------------------
 
     //build the dictionary for the gear tab as thats what the player will start on
     private void Awake()
-    {
+    {   
+        //instantiate player inventory
         _playerInventory = new PlayerInventory(); 
+
+        //build the sections dictionary  
+        _allSections.Add("weapons", _playerInventory.GetWeaponSection());
+        _allSections.Add("clothing", _playerInventory.GetClothingSection()); 
+
     }
 
 
@@ -46,12 +56,23 @@ public class TabHandler : MonoBehaviour
         }
     }
 
-    //TODO determine what section the swap was in 
-    public void SwapItems(int originalIndex, int newIndex)
+    //this method uses the passed in section to find the inventory 
+    //in the dictionary and then calls the wap item method on that
+    public void SwapItems(int originalIndex, int newIndex, string section)
     {
-        _playerInventory.GetClothingSection().SwapItem(originalIndex, newIndex); 
+        _allSections[section].SwapItem(originalIndex, newIndex); 
     }
 
+    //this equips the item to the player inventory 
+    //it passes in the previous slot section, the previous index, and the index of the equipment slot
+    //NOTE: this does not handle error checking that will be done in _playerInventory
+    public void Equip(string prevSection, int prevIndex, int equipIndex)
+    {   
+        Debug.Log("Equipping from " + prevSection + " to equipment slot " + equipIndex); 
+        //instead of passing in the section string it searches the dictionary 
+        //and sends in the actual section 
+        _playerInventory.Equip(); 
+    }
     //--------
     //getters
     //--------

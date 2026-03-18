@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 8040733501990941252}
   - component: {fileID: 3638410234763613060}
   - component: {fileID: 726688725621634591}
+  - component: {fileID: 1142677186085731162}
   m_Layer: 5
   m_Name: SlotBackground
   m_TagString: Untagged
@@ -188,6 +189,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1142677186085731162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3122628198288131729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aef9997bf1b986c4fad22f70c506a7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotInteractionHandler
+  slotOutline: {fileID: 902768819668034812}
+  SlotIndex: 0
+  SlotSection: equipment
 --- !u!1 &8907648713719531659
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.27450982}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

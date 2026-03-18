@@ -13,6 +13,10 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     //slot needs to know its own index for switching
     public int SlotIndex;
 
+    //the sectoin that the slot belongs to, this is so that items can not be placed 
+    //in different sections and so that the slot can tell the tabhandler what section to change 
+    [SerializeField] private string SlotSection;
+
     //----------------------
     //Unity Lifetime Methods
     //----------------------
@@ -25,6 +29,13 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         {
             Debug.LogWarning("Invalid Tab Handler!");
             return; 
+        }
+
+        //set the slot section
+        var slotGroup = GetComponentInParent<SlotHandler>(); 
+        if (slotGroup != null)
+        {
+            SlotSection = slotGroup.SlotSection; 
         }
     }
     //-------------------
@@ -60,21 +71,27 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
 
     //when the player is done dragging the raycast needs to determine where the mouse is 
     //if it is over a valid slot it needs to initate a swap, if it is not it need to snap back
-    //TODO there needs to be some sort of way to tell the tab handler what sectoin to invoke the swap in or to do an equipmentswap
     public void OnEndDrag(PointerEventData eventData)
     {   
 
         //get the slot that the mouse in on when the dragging ends 
         SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
 
+        //TODO check if the next slot is equipment, if so equip, equipment handling and error checking will be handled in equip
+        if (targetSlot?.SlotSection == "equipment")
+        {
+            _tabHandler.Equip(SlotSection, SlotIndex, targetSlot.SlotIndex); 
+            return; 
+        }
+
         //if it is null do not swap 
-        if (targetSlot == null)
+        if (targetSlot == null || targetSlot.SlotSection != this.SlotSection)
         {
             Debug.Log("snap back");
             return;
         }
 
         //swap the items based off of the target slots index 
-        _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex); 
+        _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex, SlotSection); 
     }
 }
