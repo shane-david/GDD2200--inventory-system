@@ -47,7 +47,10 @@ public class Inventory
     //returns whether or not the swap was successful
     public bool SwapItem(int currentIndex, int newIndex)
     {
-        return false; 
+        var temp = _items[currentIndex]; 
+        _items[currentIndex] = _items[newIndex];
+        _items[newIndex] = temp; 
+        return true; 
     }
 
     //--------

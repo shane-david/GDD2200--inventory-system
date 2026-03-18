@@ -46,6 +46,12 @@ public class TabHandler : MonoBehaviour
         }
     }
 
+    //TODO determine what section the swap was in 
+    public void SwapItems(int originalIndex, int newIndex)
+    {
+        _playerInventory.GetClothingSection().SwapItem(originalIndex, newIndex); 
+    }
+
     //--------
     //getters
     //--------

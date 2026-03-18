@@ -23,6 +23,11 @@ public class InventoryUIHandler : MonoBehaviour
         RefreshInventory(); 
     }
 
+    private void Update()
+    {
+        RefreshInventory(); 
+    }
+
     //this looks at the current tab of the playerInventory and 
     //builds all of the slots based off if the items in those two Inventory instances
     private void RefreshInventory()
