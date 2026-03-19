@@ -9,55 +9,104 @@ public class PlayerEquipmentManager
     //setters
     //-------
 
-    public void SetHat(ItemBase hat)
+    public ItemBase SetHat(ItemBase hat)
     {
         
         //make sure it is a hat 
         if (hat.GetItemType() is EquipmentType equipment && equipment.EquipmentCategory == "hat")
-        {
-            _equipment.AddItem(hat, 0); 
+        {   
+
+            //get what was previously in the slot 
+            var oldHat = _equipment.GetItem(0);
+
+            //add the new hat to the slot
+            _equipment.AddItem(hat, 0);  
+
+            //return the oldhat
+            return oldHat; 
+
+
         }
+
+        return null; 
 
     }
 
-    public void SetBackpack(ItemBase backpack)
+    public ItemBase SetBackpack(ItemBase backpack)
     {
         
         //make sure it is a backpack
         if (backpack.GetItemType() is EquipmentType equipment && equipment.EquipmentCategory == "backpack")
         {
-            _equipment.AddItem(backpack, 1); 
+            
+            //get what was previously in the slot 
+            var oldBackpack = _equipment.GetItem(1);
+
+            //ad the new backapck to the slot
+            _equipment.AddItem(backpack, 1);
+
+            //return the old backapck
+            return oldBackpack; 
         }
+
+        return null; 
     }
 
-    public void SetBoots(ItemBase boots)
+    public ItemBase SetBoots(ItemBase boots)
     {
         
         //make sure it is a backpack
         if (boots.GetItemType() is EquipmentType equipment && equipment.EquipmentCategory == "boot")
         {
-            _equipment.AddItem(boots, 2); 
+            //get what was previously in the slot 
+            var oldBoots = _equipment.GetItem(2);
+
+            //ad the new backapck to the slot
+            _equipment.AddItem(boots, 2);
+
+            //return the old backapck
+            return oldBoots; 
         }
+
+        return null; 
     }
 
-    public void SetAccessory(ItemBase accessory)
+    public ItemBase SetAccessory(ItemBase accessory)
     {
         
         //make sure it is a backpack
         if (accessory.GetItemType() is EquipmentType equipment && equipment.EquipmentCategory == "accessory")
         {
-            _equipment.AddItem(accessory, 3); 
+            //get what was previously in the slot 
+            var oldAccessory = _equipment.GetItem(3);
+
+            //ad the new backapck to the slot
+            _equipment.AddItem(accessory, 3);
+
+            //return the old backapck
+            return oldAccessory; 
         }
+
+        return null; 
     }
 
-    public void SetWeapon(ItemBase weapon)
+    public ItemBase SetWeapon(ItemBase weapon)
     {
         
         //make sure it is a backpack
         if (weapon.GetItemType() is EquipmentType equipment && equipment.EquipmentCategory == "weapon")
         {
-            _equipment.AddItem(weapon, 4); 
+            //get what was previously in the slot 
+            var oldWeapon = _equipment.GetItem(4);
+
+            //ad the new backapck to the slot
+            _equipment.AddItem(weapon, 4);
+
+            //return the old backapck
+            return oldWeapon; 
         }
+
+        return null; 
     }
 
     //--------

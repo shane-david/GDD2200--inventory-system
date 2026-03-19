@@ -10,6 +10,9 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     //the tab handler so we can call swap items
     private TabHandler _tabHandler; 
 
+    //the inventory UI handler so we can access displaying text method
+    private InventoryUIHandler _UIHandler; 
+
     //slot needs to know its own index for switching
     public int SlotIndex;
 
@@ -31,6 +34,13 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             return; 
         }
 
+        _UIHandler = GetComponentInParent<InventoryUIHandler>();
+        if (_UIHandler == null)
+        {
+            Debug.LogWarning("Invalid UI Hanlder!");
+            return; 
+        }
+
         //set the slot section
         var slotGroup = GetComponentInParent<SlotHandler>(); 
         if (slotGroup != null)
@@ -43,16 +53,27 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     //-------------------
 
     //when the raycast enters the slot enable the outline for user feedback
-    //TODO display the flavor text and description in the ItemDescription panel
     public void OnPointerEnter(PointerEventData eventData)
-    {
+    {   
+
+        //get the slot that the mouse in on when hoevering over it  
+        SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
+
+        //tell the inventory UI handler to display the text 
+        _UIHandler.RefreshDescriptionPanel(targetSlot.SlotSection, targetSlot.SlotIndex); 
+
+        //outline 
         slotOutline.SetActive(true); 
+
     }
 
     //when the raycast leaves the slot disable the outline for user feedback
-    //TODO disable the flave text and description in the ItemDescription panel
     public void OnPointerExit(PointerEventData eventData)
-    {
+    {   
+        //tell the inventory UI handler to update to no text
+        _UIHandler.RefreshDescriptionPanel(); 
+
+        //unoutline 
         slotOutline.SetActive(false); 
     }
 
@@ -94,6 +115,12 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         //otherwise it is not an equip or unequip so check if is going in the right section and set snapback
         } else if (targetSlot != null && this.SlotSection != targetSlot.SlotSection) {
             snapBack = true; 
+
+        //otherwise there has been a proper swap so swap the items
+        } else
+        {
+            //swap the items based off of the target slots index 
+            _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex, SlotSection); 
         }
 
         //if it is null do not swap 
@@ -103,7 +130,5 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             return;
         }
 
-        //swap the items based off of the target slots index 
-        _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex, SlotSection); 
     }
 }

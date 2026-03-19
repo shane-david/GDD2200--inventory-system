@@ -1,5 +1,3 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 //this class exists to manage the player stats, it will contain all of the information of the stats and exist
@@ -48,8 +46,7 @@ public class PlayerStatsMangager : MonoBehaviour
 
     public void changeWeight(int delta)
     {
-        _statWeight += delta; 
-        Debug.Log(_statWeight); 
+        _statWeight += delta;  
 
         //get new width of UI
         //depends on ration from health to max health 

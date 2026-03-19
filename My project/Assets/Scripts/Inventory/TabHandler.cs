@@ -94,4 +94,29 @@ public class TabHandler : MonoBehaviour
     //getters
     //--------
     public Dictionary<Inventory, SlotHandler> GetCurrentTab() => _currentTab; 
+
+    public string GetItemDescription(string section, int index)
+    {   
+        //get the item at that section and index
+        ItemBase item = _allSections[section].GetItem(index); 
+
+        //if it is null return "Select an Item!" so that shows up in the description panel
+        if (item == null) return "Select an Item!"; 
+
+        //otherwise get and return the item description of the item
+        return item.description; 
+        
+    }
+
+    public string GetItemFlavorText(string section, int index)
+    {
+        //get the item at that section and index
+        ItemBase item = _allSections[section].GetItem(index); 
+
+        //if it is null return an empty string so nothing shows up in that panel
+        if (item == null) return ""; 
+
+        //otherwise get and return the flavor text of the item
+        return item.flavorText; 
+    }
 }

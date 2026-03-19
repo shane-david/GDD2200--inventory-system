@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.SceneManagement;
+using UnityEngine; 
 
 public class PlayerInventory
 {
@@ -71,66 +68,59 @@ public class PlayerInventory
             //0 -> hat 1 -> backpack 2-> boot 3-> accessory 4 -> weapon
             if (itemType.EquipmentCategory == "hat" && equipIndex == 0)
             {   
-                
-                //TODO if something already exists there swap it 
 
-                //set the hat in the equipment manager
-                _equipmentManager.SetHat(prevSection.GetItem(prevIndex)); 
+                //get the hat in the equipment manager set this equal to the other hat so 
+                //we know what was in the slot previously 
+                var otherHat = _equipmentManager.SetHat(prevSection.GetItem(prevIndex)); 
 
-                //set the index of that inventory section to null
-                prevSection.RemoveItem(prevIndex); 
+                //set the index of that inventory section to the other hat, it will be null already if there was nothing there 
+                prevSection.AddItem(otherHat, prevIndex); 
 
                 result = true; 
 
-            } else if (itemType.EquipmentCategory == "backpack" && equipIndex == 1)
-            {
+            } else if (itemType.EquipmentCategory == "backpack" && equipIndex == 1) {
                 
-                //TODO if something aleady exists there swap it
+                //get the backpack in the quipmenager, set this equal to the other backpack
+                //so that we know what was in the slot previoulsy 
+                var otherBackpack = _equipmentManager.SetBackpack(prevSection.GetItem(prevIndex));
 
-                //set the backapck in the equipment manager
-                _equipmentManager.SetBackpack(prevSection.GetItem(prevIndex)); 
-
-                //set the index of that inventory section to null
-                prevSection.RemoveItem(prevIndex);
+                //set the index of that inventory section to the other backpack, it will be null already if there was nothign there
+                prevSection.AddItem(otherBackpack, prevIndex);
 
                 result = true; 
 
             } else if (itemType.EquipmentCategory == "boot" && equipIndex == 2)
             {
 
-                //TODO if something aleady exists there swap it
+               //get the boots in the quipmenager, set this equal to the other boots
+                //so that we know what was in the slot previoulsy 
+                var otherBoots = _equipmentManager.SetBoots(prevSection.GetItem(prevIndex));
 
-                //set the backapck in the equipment manager
-                _equipmentManager.SetBoots(prevSection.GetItem(prevIndex)); 
+                //set the index of that inventory section to the other backpack, it will be null already if there was nothign there
+                prevSection.AddItem(otherBoots, prevIndex);
 
-                //set the index of that inventory section to null
-                prevSection.RemoveItem(prevIndex);
-
-                result = true;   
+                result = true;  
 
             } else if (itemType.EquipmentCategory == "accessory" && equipIndex == 3)
             {
                 
-                //TODO if something aleady exists there swap it
+               //get the accessory in the quipmenager, set this equal to the other accessory
+                //so that we know what was in the slot previoulsy 
+                var otherAccessory = _equipmentManager.SetAccessory(prevSection.GetItem(prevIndex));
 
-                //set the backapck in the equipment manager
-                _equipmentManager.SetAccessory(prevSection.GetItem(prevIndex)); 
-
-                //set the index of that inventory section to null
-                prevSection.RemoveItem(prevIndex);
+                //set the index of that inventory section to the other backpack, it will be null already if there was nothign there
+                prevSection.AddItem(otherAccessory, prevIndex);
 
                 result = true; 
 
             } else if (itemType.EquipmentCategory == "weapon" && equipIndex == 4)
             {
-                
-                //TODO if something aleady exists there swap it
+               //get the weapon in the equipmenager, set this equal to the other weapon
+                //so that we know what was in the slot previoulsy 
+                var otherWeapon = _equipmentManager.SetWeapon(prevSection.GetItem(prevIndex));
 
-                //set the backapck in the equipment manager
-                _equipmentManager.SetWeapon(prevSection.GetItem(prevIndex)); 
-
-                //set the index of that inventory section to null
-                prevSection.RemoveItem(prevIndex);
+                //set the index of that inventory section to the other backpack, it will be null already if there was nothign there
+                prevSection.AddItem(otherWeapon, prevIndex);
 
                 result = true; 
 
@@ -171,17 +161,58 @@ public class PlayerInventory
         )
         {
             
-            //TODO if something already exists there swap it if able 
+            //get the item that is in the new index slot 
+            ItemBase newItem = newSection.GetItem(newIndex); 
 
-            //add the item back to the new index in the inventory 
-            newSection.AddItem(_equipmentManager.GetEquipment().GetItem(prevIndex), newIndex); 
+            //if there is nothing in that slot (it is null), simply add the item to the inventory 
+            if (newItem == null) {
 
-            //remove the hat from the equipment inventory
-            _equipmentManager.GetEquipment().RemoveItem(prevIndex); 
+                //add the item back to the new index in the inventory 
+                newSection.AddItem(_equipmentManager.GetEquipment().GetItem(prevIndex), newIndex); 
 
-            //unequip it in data 
-            itemType.Unequip(useCtx); 
-            return true; 
+                //remove the hat from the equipment inventory
+                _equipmentManager.GetEquipment().RemoveItem(prevIndex); 
+
+                //unequip it in data 
+                itemType.Unequip(useCtx); 
+                return true; 
+
+            //otherwise, there is in item in that inventory 
+            } else {
+
+                //if the item in that inventory matches the equipment type of what is being unequippied swap them
+                if (newItem.GetItemType() is EquipmentType newType && newType.EquipmentCategory == itemType.EquipmentCategory) {
+                    
+                    //add the old item to its inventory slot
+                    newSection.AddItem(_equipmentManager.GetEquipment().GetItem(prevIndex), newIndex); 
+
+                    //add the new item to its respective equipment slot 
+                    switch (prevIndex)
+                    {
+                        case 0:
+                            _equipmentManager.SetHat(newItem);
+                            break;
+                        case 1:
+                            _equipmentManager.SetBackpack(newItem);
+                            break;
+                        case 2:
+                            _equipmentManager.SetBoots(newItem); 
+                            break;
+                        case 3:
+                            _equipmentManager.SetAccessory(newItem);
+                            break;
+                        case 4:
+                            _equipmentManager.SetWeapon(newItem);
+                            break;
+                    }
+
+                    return true; 
+
+                //otherwise you can not unequip so return false for a snap back
+                } else {
+                    return false; 
+                }
+            }
 
         }
 
@@ -200,6 +231,7 @@ public class PlayerInventory
         _clothing.AddItem(_itemDatabase.CreateFishingHat(), 0);
         _clothing.AddItem(_itemDatabase.CreateLightBackpack(), 1); 
         _clothing.AddItem(_itemDatabase.CreateBoots(), 4);
+        _clothing.AddItem(_itemDatabase.CreateCowboyHat(), 2); 
 
     }
 

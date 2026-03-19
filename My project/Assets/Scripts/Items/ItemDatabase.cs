@@ -59,4 +59,18 @@ public class ItemDatabase
 
         return fishingHat; 
     }
+
+    public ItemBase CreateCowboyHat()
+    {
+        ItemBase cowboyHat = new(
+            "Cowboy Hat",
+            "Found on the road up to the abonded town, likely belonged to a forgotten hero.",
+            "Increase your health!",
+            "cowboyHat",
+            1,
+            new EquipmentType("hat", "health", 10, 2)
+        );
+
+        return cowboyHat; 
+    }
 }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class InventoryUIHandler : MonoBehaviour
@@ -5,6 +6,10 @@ public class InventoryUIHandler : MonoBehaviour
 
     //put in the tab handler so we can get slots and refresh the inventory
     private TabHandler _tabHandler; 
+
+    //get the text mesh pro objects that need to be changed real tiem
+    [SerializeField] private TMP_Text _descriptionTextTMP; 
+    [SerializeField] private TMP_Text _flavorTextTMP; 
 
     //----------------------
     //Unity lifetime methods
@@ -21,6 +26,7 @@ public class InventoryUIHandler : MonoBehaviour
 
         _tabHandler.ChangeTab("gear"); 
         RefreshInventory(); 
+        RefreshDescriptionPanel(); 
     }
 
     private void Update()
@@ -36,5 +42,22 @@ public class InventoryUIHandler : MonoBehaviour
         {    
             section.Value.BuildSlots(section.Key); 
         }
+    }
+
+    //this recieves an item index and section and tells the tab handler
+    //to get the description and flavor text of that item, it then sets 
+    //the TMP elements in the inventory UI to those values 
+    public void RefreshDescriptionPanel(string section, int index)
+    {
+        _descriptionTextTMP.text = _tabHandler.GetItemDescription(section, index);
+        _flavorTextTMP.text = _tabHandler.GetItemFlavorText(section, index); 
+    }
+
+    //overriden method that recieves no arguments, this one will set the description text
+    //and flavor text to empty strings
+    public void RefreshDescriptionPanel()
+    {
+        _descriptionTextTMP.text = "";
+        _flavorTextTMP.text = ""; 
     }
 }
