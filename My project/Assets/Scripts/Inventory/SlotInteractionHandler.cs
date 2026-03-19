@@ -102,7 +102,8 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
 
         //check if the next slot is equipment, if so equip, equipment handling and error checking will be handled in equip
-        if (targetSlot?.SlotSection == "equipment") {   
+        if (targetSlot?.SlotSection == "equipment") { 
+
             //set the opposite result of the equip to snapBack so that if it returns a false, we know we need to snap back
             snapBack = !_tabHandler.Equip(SlotSection, SlotIndex, targetSlot.SlotIndex); 
 
@@ -113,7 +114,8 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             snapBack = !_tabHandler.Unequip(SlotIndex, targetSlot.SlotSection, targetSlot.SlotIndex); 
 
         //otherwise it is not an equip or unequip so check if is going in the right section and set snapback
-        } else if (targetSlot != null && this.SlotSection != targetSlot.SlotSection) {
+        } else if (targetSlot == null || this.SlotSection != targetSlot.SlotSection) {
+
             snapBack = true; 
 
         //otherwise there has been a proper swap so swap the items
