@@ -10,6 +10,7 @@ public class PlayerInventory
     //instances of Inventory representing the different sections of the player inventory
     Inventory _weapons; 
     Inventory _clothing; 
+    Inventory _accessories; 
 
     //list representing the sections that are in the current tabe
     List<Inventory> _currentTab = new(); 
@@ -32,6 +33,7 @@ public class PlayerInventory
         //TODO base capacity (second argument) off of backpack
         _weapons  = new Inventory("Weapons", 5); 
         _clothing = new Inventory("Clothing", 5); 
+        _accessories = new Inventory("Tools", 15); 
         _itemDatabase = new ItemDatabase(); 
         BuildStartingItems(); 
 
@@ -233,6 +235,11 @@ public class PlayerInventory
         _clothing.AddItem(_itemDatabase.CreateBoots(), 4);
         _clothing.AddItem(_itemDatabase.CreateCowboyHat(), 2); 
 
+        //starting items for accessories
+        _accessories.AddItem(_itemDatabase.CreateRope(), 0);
+        _accessories.AddItem(_itemDatabase.CreateFishingRod(), 12);
+        _accessories.AddItem(_itemDatabase.CreateFlashlight(), 4); 
+
     }
 
     //--------
@@ -242,6 +249,8 @@ public class PlayerInventory
     public Inventory GetWeaponSection() => _weapons; 
 
     public Inventory GetClothingSection() => _clothing; 
+
+    public Inventory GetAccessorySection() => _accessories; 
 
     public Inventory GetEquipmentSection()
     {

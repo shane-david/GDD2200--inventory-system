@@ -73,4 +73,46 @@ public class ItemDatabase
 
         return cowboyHat; 
     }
+
+    public ItemBase CreateRope()
+    {
+        ItemBase rope = new(
+            "Rope",
+            "Thrown in your pack last minute. Not very long, not very strong.",
+            "Might come in useful further up the mountain...",
+            "rope",
+            1,
+            new EquipmentType("accessory", "climbPower", 10, 5)
+        );
+
+        return rope; 
+    }
+
+    public ItemBase CreateFishingRod()
+    {
+        ItemBase fishingRod = new(
+            "Fishing Rod",
+            "Packed in your bag by your Dad hoping you catch some fish on your trip",
+            "Apparently theres a lake in the middle of the mountain...",
+            "basicRod", 
+            1,
+            new EquipmentType("accessory", "catchRate", 20, 5)
+        ); 
+
+        return fishingRod; 
+    }
+
+    public ItemBase CreateFlashlight()
+    {
+        ItemBase flashlight = new(
+            "Flash Light",
+            "First thing you packed, everyone knows you need a flashlight!",
+            "Dont forget to replace the batteries soon...",
+            "flashlight",
+            1,
+            new EquipmentType("accessory", "vision", 50, 3)
+        ); 
+
+        return flashlight; 
+    }
 }

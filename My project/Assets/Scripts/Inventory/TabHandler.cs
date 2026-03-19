@@ -13,7 +13,24 @@ public class TabHandler : MonoBehaviour
     [Header("Drag in each slot section for each tab")]
     [SerializeField] private SlotHandler _weaponSlots;
     [SerializeField] private SlotHandler _clothingSlots;
-    [SerializeField] private SlotHandler _equipmentSlots; 
+    [SerializeField] private SlotHandler _equipmentSlots;
+    [SerializeField] private SlotHandler _accessorySlots;
+
+
+    //assigned in the insepctor, the parent object of all the tabs so that they can be turned on and off
+    [Header("Drag and drop in each tab")]
+    [SerializeField] private GameObject _gearTab;  
+    [SerializeField] private GameObject _toolsTab;  
+    [SerializeField] private GameObject _suppliesTab;
+    [SerializeField] private GameObject _foodTab; 
+
+    //assigned in the inspector, the button objects that represent the tabs
+    [Header("Drag and drop in each button")]
+    [SerializeField] private RectTransform _gearButton; 
+    [SerializeField] private RectTransform _toolsButton; 
+    [SerializeField] private RectTransform _suppliesButton; 
+    [SerializeField] private RectTransform _foodButton; 
+
 
     //dictionary representing the current tab, contains 
     //key of Inventories in that tab to their respective slot handlers
@@ -40,6 +57,7 @@ public class TabHandler : MonoBehaviour
         _allSections.Add("weapons", _playerInventory.GetWeaponSection());
         _allSections.Add("clothing", _playerInventory.GetClothingSection()); 
         _allSections.Add("equipment", _playerInventory.GetEquipmentSection()); 
+        _allSections.Add("Tools", _playerInventory.GetAccessorySection()); 
 
     }
 
@@ -50,14 +68,69 @@ public class TabHandler : MonoBehaviour
     public void ChangeTab(string tabName)
     {   
 
+        //clear all tabs
         _currentTab.Clear(); 
+
+        //disable all tabs
+        _gearTab.SetActive(false); 
+        _toolsTab.SetActive(false); 
+        _suppliesTab.SetActive(false); 
+        _foodTab.SetActive(false); 
+
+        //reset size of all tabs
+        _gearButton.sizeDelta = new Vector2(65, 30);
+        _toolsButton.sizeDelta = new Vector2(65, 30);
+        _suppliesButton.sizeDelta = new Vector2(65,30); 
+        _foodButton.sizeDelta = new Vector2(65,30); 
 
         switch (tabName)
         {   
             //weapons and clothing section within the gear tab 
             case "gear": 
+
+                //add inventories for the gear tab
                 _currentTab.Add(_playerInventory.GetWeaponSection(), _weaponSlots);
                 _currentTab.Add(_playerInventory.GetClothingSection(), _clothingSlots);  
+
+                //size up the gear tab button
+                _gearButton.sizeDelta = new Vector2(90,40); 
+
+                //enable the gear tab 
+                _gearTab.SetActive(true); 
+                break;
+
+            case "tools":
+
+                //add inventory for tools tabl
+                _currentTab.Add(_playerInventory.GetAccessorySection(), _accessorySlots); 
+
+                //size up the tools tab button 
+                _toolsButton.sizeDelta = new Vector2(90,40);
+
+                //enable the tools tab 
+                _toolsTab.SetActive(true); 
+                break; 
+
+            case "supplies":
+
+                //add inventory for supplies tab
+
+                //size up supplies tab button
+                _suppliesButton.sizeDelta = new Vector2(90,40); 
+
+                //enable the supplies tab
+                _suppliesTab.SetActive(true);
+                break; 
+
+            case "food":
+
+                //add inventory for food tab
+
+                //size up food tab button
+                _foodButton.sizeDelta = new Vector2(90,40);
+
+                //enable the food tab
+                _foodTab.SetActive(true);
                 break; 
         }
 
