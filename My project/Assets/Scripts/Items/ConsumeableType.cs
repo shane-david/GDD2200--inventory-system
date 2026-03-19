@@ -3,7 +3,7 @@
 public class ConsumeableType : IItemType
 {
     
-    public void Use(ItemBase item, UseContext ctx)
+    public void Use(UseContext ctx)
     {
         
     }

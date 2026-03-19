@@ -12,7 +12,7 @@ public class ItemDatabase
             "Looks like it needs to be sharpened",
             "pocketKnife",
             1,
-            new EquipmentType("weapon", "attack", 10)
+            new EquipmentType("weapon", "attack", 10, 1)
         ); 
 
         return pocketKnife; 
@@ -26,7 +26,7 @@ public class ItemDatabase
             "These boot give you mystical abilities!",
             "boots",
             1,
-            new EquipmentType("boot", "jumpPower", 10)
+            new EquipmentType("boot", "jumpPower", 10, 4)
         ); 
 
         return boots; 
@@ -40,7 +40,7 @@ public class ItemDatabase
             "Maybe only use it for short side adventures!",
             "backpack",
             1,
-            new EquipmentType("backpack", "weight", 20)
+            new EquipmentType("backpack", "weight", 20, 0)
         ); 
 
         return lightBackpack; 
@@ -54,7 +54,7 @@ public class ItemDatabase
             "Increases your catch rate!",
             "hat",
             1,
-            new EquipmentType("hat", "catchRate", 10)
+            new EquipmentType("hat", "catchRate", 10, 2)
         ); 
 
         return fishingHat; 

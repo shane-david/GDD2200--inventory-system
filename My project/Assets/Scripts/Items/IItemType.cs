@@ -6,6 +6,6 @@ public interface IItemType
 
     //recieves the item as well as a struct with any context that would need to be modified
     //(pretty much just stats right now)
-    public void Use(ItemBase item, UseContext ctx); 
+    public void Use(UseContext ctx); 
 
 }

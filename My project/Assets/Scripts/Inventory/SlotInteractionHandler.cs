@@ -60,7 +60,7 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     //TODO make a ghost copy for dragging feedback
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Original Index: " + SlotIndex); 
+       
     }
 
     //TODO make the ghost copy follow the mouse 
@@ -81,21 +81,23 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
 
         //check if the next slot is equipment, if so equip, equipment handling and error checking will be handled in equip
-        if (targetSlot?.SlotSection == "equipment")
-        {   
+        if (targetSlot?.SlotSection == "equipment") {   
             //set the opposite result of the equip to snapBack so that if it returns a false, we know we need to snap back
             snapBack = !_tabHandler.Equip(SlotSection, SlotIndex, targetSlot.SlotIndex); 
-        }
 
         //next test if this slot is equipment, if so, and the target slot is valid, unequip 
-        if (SlotSection == "equipment" && targetSlot != null)
-        {
+        } else if (targetSlot != null && SlotSection == "equipment") {
+
             //set the opposite reslt of the unequip to snapBack so that if it returns a false, we know we need to snap back 
             snapBack = !_tabHandler.Unequip(SlotIndex, targetSlot.SlotSection, targetSlot.SlotIndex); 
+
+        //otherwise it is not an equip or unequip so check if is going in the right section and set snapback
+        } else if (targetSlot != null && this.SlotSection != targetSlot.SlotSection) {
+            snapBack = true; 
         }
 
         //if it is null do not swap 
-        if (targetSlot == null || (targetSlot.SlotSection != this.SlotSection && targetSlot.SlotSection != "equipment") || snapBack)
+        if (targetSlot == null ||  snapBack)
         {
             Debug.Log("snap back");
             return;

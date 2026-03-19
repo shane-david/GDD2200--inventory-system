@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.SceneManagement;
 
 public class PlayerInventory
@@ -19,17 +20,33 @@ public class PlayerInventory
     //instance of equipment manager to keep track of the equipment tab
     PlayerEquipmentManager _equipmentManager = new(); 
 
+    //instance of the stats manager to keep track of the stats tab
+    PlayerStatsMangager _statsManager; 
+
+    //use context to pass into the use methods for items
+    UseContext useCtx; 
+
     //-------------
     //constructors
     //-------------
 
-    public PlayerInventory()
+    public PlayerInventory(PlayerStatsMangager stats)
     {   
         //TODO base capacity (second argument) off of backpack
         _weapons  = new Inventory("Weapons", 5); 
         _clothing = new Inventory("Clothing", 5); 
         _itemDatabase = new ItemDatabase(); 
         BuildStartingItems(); 
+
+        //instantiate the stats manager 
+        _statsManager = stats; 
+
+        //build the use ctx
+        useCtx = new() {
+            stats = _statsManager
+        };
+            
+        
     }
 
     //--------------
@@ -39,6 +56,9 @@ public class PlayerInventory
     //this method handles equipping this is PlayerInventory wide as the equipment panel is always visible 
     public bool Equip(Inventory prevSection, int prevIndex, int equipIndex)
     {   
+
+        //boolean representing the result of the equip
+        bool result = false; 
 
         //get the item type interface from the item
         EquipmentType itemType = prevSection.GetItem(prevIndex).GetItemType() as EquipmentType; 
@@ -60,7 +80,7 @@ public class PlayerInventory
                 //set the index of that inventory section to null
                 prevSection.RemoveItem(prevIndex); 
 
-                return true; 
+                result = true; 
 
             } else if (itemType.EquipmentCategory == "backpack" && equipIndex == 1)
             {
@@ -73,7 +93,7 @@ public class PlayerInventory
                 //set the index of that inventory section to null
                 prevSection.RemoveItem(prevIndex);
 
-                return true; 
+                result = true; 
 
             } else if (itemType.EquipmentCategory == "boot" && equipIndex == 2)
             {
@@ -86,7 +106,7 @@ public class PlayerInventory
                 //set the index of that inventory section to null
                 prevSection.RemoveItem(prevIndex);
 
-                return true;   
+                result = true;   
 
             } else if (itemType.EquipmentCategory == "accessory" && equipIndex == 3)
             {
@@ -99,7 +119,7 @@ public class PlayerInventory
                 //set the index of that inventory section to null
                 prevSection.RemoveItem(prevIndex);
 
-                return true; 
+                result = true; 
 
             } else if (itemType.EquipmentCategory == "weapon" && equipIndex == 4)
             {
@@ -112,15 +132,26 @@ public class PlayerInventory
                 //set the index of that inventory section to null
                 prevSection.RemoveItem(prevIndex);
 
-                return true; 
+                result = true; 
 
             } else 
             {
-                return false;
+                result = false;
             }
+        } else
+        {
+            result = false; 
         }
 
-        return false; 
+        //if the result was a successful equip call use on the equipment 
+        if (result)
+        {
+            itemType.Use(useCtx); 
+        }
+
+        //return the result
+        return result; 
+ 
     }
 
     //this method handles unequipping, this is PlayerInventory wide as the equipment panel is always visible
@@ -148,6 +179,8 @@ public class PlayerInventory
             //remove the hat from the equipment inventory
             _equipmentManager.GetEquipment().RemoveItem(prevIndex); 
 
+            //unequip it in data 
+            itemType.Unequip(useCtx); 
             return true; 
 
         }

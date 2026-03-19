@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TabHandler : MonoBehaviour
@@ -20,7 +21,10 @@ public class TabHandler : MonoBehaviour
 
     //dictionary from strings to all of the sections so that the tab handler
     //knows wich tab to call the SwapItems method on 
-    private Dictionary<string, Inventory> _allSections = new(); 
+    private Dictionary<string, Inventory> _allSections = new();
+
+    //refernce to the player object for stats
+    [SerializeField] private GameObject _player;  
 
     //----------------------
     //Unity Lifetime Methods
@@ -30,7 +34,7 @@ public class TabHandler : MonoBehaviour
     private void Awake()
     {   
         //instantiate player inventory
-        _playerInventory = new PlayerInventory(); 
+        _playerInventory = new PlayerInventory(_player.GetComponent<PlayerStatsMangager>()); 
 
         //build the sections dictionary  
         _allSections.Add("weapons", _playerInventory.GetWeaponSection());
