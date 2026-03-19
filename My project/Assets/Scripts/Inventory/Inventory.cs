@@ -38,9 +38,10 @@ public class Inventory
 
     //removes an item from the items list, returns whether or not
     //removing the item was successful 
-    public bool RemoveItem(ItemBase item)
+    //TODO bounds checking
+    public void RemoveItem(int index)
     {
-        return false; 
+        _items[index] = null; 
     }
 
     //moves an item from one index to another index
@@ -67,8 +68,5 @@ public class Inventory
         return _items; 
     }
 
-    public string print()
-    {
-        return "here"; 
-    }
+    public string GetName() => _sectionName; 
 }

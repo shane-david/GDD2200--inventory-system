@@ -74,18 +74,28 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     public void OnEndDrag(PointerEventData eventData)
     {   
 
+        //snap back boolean so that we know whether to do the snap back or not 
+        bool snapBack = false; 
+
         //get the slot that the mouse in on when the dragging ends 
         SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
 
-        //TODO check if the next slot is equipment, if so equip, equipment handling and error checking will be handled in equip
+        //check if the next slot is equipment, if so equip, equipment handling and error checking will be handled in equip
         if (targetSlot?.SlotSection == "equipment")
+        {   
+            //set the opposite result of the equip to snapBack so that if it returns a false, we know we need to snap back
+            snapBack = !_tabHandler.Equip(SlotSection, SlotIndex, targetSlot.SlotIndex); 
+        }
+
+        //next test if this slot is equipment, if so, and the target slot is valid, unequip 
+        if (SlotSection == "equipment" && targetSlot != null)
         {
-            _tabHandler.Equip(SlotSection, SlotIndex, targetSlot.SlotIndex); 
-            return; 
+            //set the opposite reslt of the unequip to snapBack so that if it returns a false, we know we need to snap back 
+            snapBack = !_tabHandler.Unequip(SlotIndex, targetSlot.SlotSection, targetSlot.SlotIndex); 
         }
 
         //if it is null do not swap 
-        if (targetSlot == null || targetSlot.SlotSection != this.SlotSection)
+        if (targetSlot == null || (targetSlot.SlotSection != this.SlotSection && targetSlot.SlotSection != "equipment") || snapBack)
         {
             Debug.Log("snap back");
             return;

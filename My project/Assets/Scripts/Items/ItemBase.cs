@@ -21,12 +21,18 @@ public class ItemBase
     //-----------------------------------------
 
     //TODO add item type and stack behavior 
-    public ItemBase(string name, string description, string flavorText, string id, int quantity)
+    public ItemBase(string name, string description, string flavorText, string id, int quantity, IItemType itemType)
     {
         this.name = name;
         this.description = description;
         this.flavorText = flavorText; 
         this.id = id;
         this.quantity = quantity;  
+        _itemType = itemType; 
     }
+
+    //--------
+    //getters
+    //--------
+    public IItemType GetItemType() => _itemType; 
 }

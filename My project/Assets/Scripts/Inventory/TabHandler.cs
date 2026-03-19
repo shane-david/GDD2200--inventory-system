@@ -12,6 +12,7 @@ public class TabHandler : MonoBehaviour
     [Header("Drag in each slot section for each tab")]
     [SerializeField] private SlotHandler _weaponSlots;
     [SerializeField] private SlotHandler _clothingSlots;
+    [SerializeField] private SlotHandler _equipmentSlots; 
 
     //dictionary representing the current tab, contains 
     //key of Inventories in that tab to their respective slot handlers
@@ -34,6 +35,7 @@ public class TabHandler : MonoBehaviour
         //build the sections dictionary  
         _allSections.Add("weapons", _playerInventory.GetWeaponSection());
         _allSections.Add("clothing", _playerInventory.GetClothingSection()); 
+        _allSections.Add("equipment", _playerInventory.GetEquipmentSection()); 
 
     }
 
@@ -54,6 +56,9 @@ public class TabHandler : MonoBehaviour
                 _currentTab.Add(_playerInventory.GetClothingSection(), _clothingSlots);  
                 break; 
         }
+
+        //always add equipment 
+        _currentTab.Add(_playerInventory.GetEquipmentSection(), _equipmentSlots); 
     }
 
     //this method uses the passed in section to find the inventory 
@@ -66,12 +71,20 @@ public class TabHandler : MonoBehaviour
     //this equips the item to the player inventory 
     //it passes in the previous slot section, the previous index, and the index of the equipment slot
     //NOTE: this does not handle error checking that will be done in _playerInventory
-    public void Equip(string prevSection, int prevIndex, int equipIndex)
+    public bool Equip(string prevSection, int prevIndex, int equipIndex)
     {   
-        Debug.Log("Equipping from " + prevSection + " to equipment slot " + equipIndex); 
-        //instead of passing in the section string it searches the dictionary 
-        //and sends in the actual section 
-        _playerInventory.Equip(); 
+        
+        //instead of passing in the section string it searches the dictionary and sends in the actual section 
+        return _playerInventory.Equip(_allSections[prevSection], prevIndex, equipIndex); 
+    }
+
+    //this unequips the item from the player inventory
+    //it passes in the index of the previous equipment, a string representing the new section, and the index of the new section
+    //NOTE: this does not handle error checking, that will be done in _playerInvenotry
+    public bool Unequip(int prevIndex, string newSection, int newIndex)
+    {   
+        //instead of passin in the section string, it searches the dictionary and sends in the actual section 
+        return _playerInventory.Unequip(prevIndex, _allSections[newSection], newIndex); 
     }
     //--------
     //getters

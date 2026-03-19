@@ -11,7 +11,8 @@ public class ItemDatabase
             "Simple surival tool packed in your bag when you began the adventure",
             "Looks like it needs to be sharpened",
             "pocketKnife",
-            1
+            1,
+            new EquipmentType("weapon", "attack", 10)
         ); 
 
         return pocketKnife; 
@@ -24,7 +25,8 @@ public class ItemDatabase
             "Boots found in the depths of the Leafspring Gardens, stolen by the shop keeper",
             "These boot give you mystical abilities!",
             "boots",
-            1
+            1,
+            new EquipmentType("boot", "jumpPower", 10)
         ); 
 
         return boots; 
@@ -37,7 +39,8 @@ public class ItemDatabase
             "This pack feels light and is easy to move in but it can't hold that much stuff",
             "Maybe only use it for short side adventures!",
             "backpack",
-            1
+            1,
+            new EquipmentType("backpack", "weight", 20)
         ); 
 
         return lightBackpack; 
@@ -50,7 +53,8 @@ public class ItemDatabase
             "Packed in your bag by your Dad hoping you catch some fish on your trip.",
             "Increases your catch rate!",
             "hat",
-            1
+            1,
+            new EquipmentType("hat", "catchRate", 10)
         ); 
 
         return fishingHat; 

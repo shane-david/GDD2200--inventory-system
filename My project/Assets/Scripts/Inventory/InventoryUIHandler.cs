@@ -33,7 +33,7 @@ public class InventoryUIHandler : MonoBehaviour
     private void RefreshInventory()
     {
         foreach (var section in _tabHandler.GetCurrentTab())
-        {
+        {    
             section.Value.BuildSlots(section.Key); 
         }
     }
