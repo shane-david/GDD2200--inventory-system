@@ -189,6 +189,31 @@ public class TabHandler : MonoBehaviour
         return false; 
     }
 
+    public bool Stack(string section, int thisIndex, int otherIndex)
+    {
+        bool stackResult = false; 
+
+        //get the items 
+        ItemBase thisItem = _allSections[section].GetItem(thisIndex); 
+        ItemBase otherItem = _allSections[section].GetItem(otherIndex); 
+
+        //try to stack and store the result in a variable if both of the items are not null
+        if (thisItem != null && otherItem != null) { 
+            stackResult = thisItem.GetStackBehavior().TryToStack(thisItem, otherItem); 
+        }
+
+        //if the result of teh stack was true destroy this item because its quantity was given to other item
+        if (stackResult)
+        {
+            _allSections[section].RemoveItem(thisIndex);  
+        }
+
+        //return the stack result so that the interaction handler knows what happend
+        return stackResult; 
+
+        
+    }
+
     //--------
     //getters
     //--------

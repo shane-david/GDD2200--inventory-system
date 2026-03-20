@@ -424,5 +424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotInteractionHandler
   slotOutline: {fileID: 2420544136050039028}
+  itemIcon: {fileID: 6435723867489789889}
   SlotIndex: 0
   SlotSection: 

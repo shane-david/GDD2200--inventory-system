@@ -1,12 +1,18 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI; 
 
 public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
 
     //the slot outline so that it can activate and deactivate it 
     [SerializeField] private GameObject slotOutline; 
+
+    //the slot icon so that we can create a ghost copy of it for the drag and drop effect
+    [SerializeField] private Image itemIcon; 
+
+    //the drag ghost game object that is static so that is is shared across all slots sicne only one thing can be dragged at a time 
+    private static GameObject _dragGhost; 
 
     //the tab handler so we can call swap items
     private TabHandler _tabHandler; 
@@ -96,23 +102,67 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         slotOutline.SetActive(false); 
     }
 
-    //TODO make sure there is an item in the slot 
-    //TODO make a ghost copy for dragging feedback
     public void OnBeginDrag(PointerEventData eventData)
     {
        
+        //make sure it does not try to create a ghost object of an empty slot 
+        if (itemIcon == null || !itemIcon.enabled || itemIcon.sprite == null)
+        {   
+            //cancel the drag 
+            eventData.pointerDrag = null;
+            return; 
+        }
+
+        //make the current image invisible 
+        itemIcon.color = new Color(itemIcon.color.r, itemIcon.color.g, itemIcon.color.b, 0f);
+
+        //if it has not yet returned create the ghost image 
+
+        //get the root canvas so that the ghost image can still exist on it when instantiated
+        Canvas inventoryCanvas = GetComponentInParent<Canvas>().rootCanvas; 
+
+        //create the drag ghost, set its parent, make sure it is rendered on top 
+        _dragGhost = new GameObject("DragGhost"); 
+        _dragGhost.transform.SetParent(inventoryCanvas.transform, false); 
+        _dragGhost.transform.SetAsLastSibling(); 
+
+        //set the drag ghost's sprite and make sure it does not block raycast targets
+        Image ghostImage =_dragGhost.AddComponent<Image>();
+        ghostImage.sprite = itemIcon.sprite; 
+        ghostImage.raycastTarget = false; 
+
+        //set the size of the ghost image to be 1.5x bigger than the orignial icon to indicate dragging 
+        _dragGhost.GetComponent<RectTransform>().sizeDelta = itemIcon.GetComponent<RectTransform>().rect.size * 1.5f; 
+
+        //now make the ghost's position be the same as the moust position 
+        _dragGhost.transform.position = eventData.position;  
+
     }
 
-    //TODO make the ghost copy follow the mouse 
     public void OnDrag(PointerEventData eventData)
-    {
-        
+    {   
+        //if there is a valid drag ghost, drag it 
+        if (_dragGhost != null)
+        {
+            _dragGhost.transform.position = eventData.position; 
+        }
     }
+
 
     //when the player is done dragging the raycast needs to determine where the mouse is 
     //if it is over a valid slot it needs to initate a swap, if it is not it need to snap back
     public void OnEndDrag(PointerEventData eventData)
     {   
+        
+        //first need to clean up the ghost icon by destroying the ghost game object
+        if (_dragGhost != null)
+        {
+            Destroy(_dragGhost);
+            _dragGhost = null; 
+        }
+
+        //next reset the alpah of the item icon
+        itemIcon.color = new Color(itemIcon.color.r, itemIcon.color.g, itemIcon.color.b, 1f); 
 
         //snap back boolean so that we know whether to do the snap back or not 
         bool snapBack = false; 
@@ -138,18 +188,26 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             snapBack = true; 
 
         //otherwise there has been a proper swap so swap the items
-        } else
-        {
-            //swap the items based off of the target slots index 
-            _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex, SlotSection); 
+        } else {   
+
+            //try to stack 
+            bool didStack = _tabHandler.Stack(SlotSection, SlotIndex, targetSlot.SlotIndex); 
+
+            //if the stack did not go through swap the items based off of the target slots index 
+            if (!didStack) {
+                _tabHandler.SwapItems(SlotIndex, targetSlot.SlotIndex, SlotSection); 
+            }
         }
 
         //if it is null do not swap 
         if (targetSlot == null ||  snapBack)
         {
-            Debug.Log("snap back");
+            _UIHandler.SnapBack(); 
             return;
         }
 
     }
+
+    //getter the drag ghost so the slot handler knows whether to render the image or not 
+    public static GameObject GetDragGhost() => _dragGhost; 
 }

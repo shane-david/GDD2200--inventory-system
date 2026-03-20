@@ -245,11 +245,13 @@ public class PlayerInventory
         //starting items for materials
         _materials.AddItem(_itemDatabase.CreateWood(), 0);
         _materials.AddItem(_itemDatabase.CreateCarp(), 1); 
+        _materials.AddItem(_itemDatabase.CreateWood(), 3); 
 
         //starting items for food
         _food.AddItem(_itemDatabase.CreateApple(), 0);
         _food.AddItem(_itemDatabase.CreateBread(), 1);
         _food.AddItem(_itemDatabase.CreateCookedFish(), 2); 
+
 
     }
 

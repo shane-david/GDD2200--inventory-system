@@ -48,7 +48,8 @@ public class InventoryUIHandler : MonoBehaviour
     //to get the description and flavor text of that item, it then sets 
     //the TMP elements in the inventory UI to those values 
     public void RefreshDescriptionPanel(string section, int index)
-    {
+    {   
+        _descriptionTextTMP.color = Color.black; 
         _descriptionTextTMP.text = _tabHandler.GetItemDescription(section, index);
         _flavorTextTMP.text = _tabHandler.GetItemFlavorText(section, index); 
     }
@@ -56,8 +57,16 @@ public class InventoryUIHandler : MonoBehaviour
     //overriden method that recieves no arguments, this one will set the description text
     //and flavor text to empty strings
     public void RefreshDescriptionPanel()
-    {
+    {   
+        _descriptionTextTMP.color = Color.black; 
         _descriptionTextTMP.text = "";
         _flavorTextTMP.text = ""; 
+    }
+
+    //sets the desctiptoin panel to say that the item can not go there when an item is dragged somewhere it can not go
+    public void SnapBack()
+    {
+        _descriptionTextTMP.text = "Item can not go there!";
+        _descriptionTextTMP.color = Color.red; 
     }
 }

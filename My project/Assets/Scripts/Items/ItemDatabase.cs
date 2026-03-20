@@ -1,4 +1,4 @@
-using UnityEditor;
+
 
 public class ItemDatabase
 {
@@ -14,7 +14,8 @@ public class ItemDatabase
             "Looks like it needs to be sharpened",
             "pocketKnife",
             1,
-            new EquipmentType("weapon", "attack", 10, 1)
+            new EquipmentType("weapon", "attack", 10, 1),
+            new NonStackable()
         ); 
 
         return pocketKnife; 
@@ -28,7 +29,8 @@ public class ItemDatabase
             "These boot give you mystical abilities!",
             "boots",
             1,
-            new EquipmentType("boot", "jumpPower", 10, 4)
+            new EquipmentType("boot", "jumpPower", 10, 4),
+            new NonStackable()
         ); 
 
         return boots; 
@@ -42,7 +44,8 @@ public class ItemDatabase
             "Maybe only use it for short side adventures!",
             "backpack",
             1,
-            new EquipmentType("backpack", "weight", 20, 0)
+            new EquipmentType("backpack", "weight", 20, 0),
+            new NonStackable()
         ); 
 
         return lightBackpack; 
@@ -56,7 +59,8 @@ public class ItemDatabase
             "Increases your catch rate!",
             "hat",
             1,
-            new EquipmentType("hat", "catchRate", 10, 2)
+            new EquipmentType("hat", "catchRate", 10, 2),
+            new NonStackable()
         ); 
 
         return fishingHat; 
@@ -70,7 +74,8 @@ public class ItemDatabase
             "Increase your health!",
             "cowboyHat",
             1,
-            new EquipmentType("hat", "health", 10, 2)
+            new EquipmentType("hat", "health", 10, 2),
+            new NonStackable()
         );
 
         return cowboyHat; 
@@ -84,7 +89,8 @@ public class ItemDatabase
             "Might come in useful further up the mountain...",
             "rope",
             1,
-            new EquipmentType("accessory", "climbPower", 10, 5)
+            new EquipmentType("accessory", "climbPower", 10, 5),
+            new NonStackable()
         );
 
         return rope; 
@@ -98,7 +104,8 @@ public class ItemDatabase
             "Apparently theres a lake in the middle of the mountain...",
             "basicRod", 
             1,
-            new EquipmentType("accessory", "catchRate", 20, 5)
+            new EquipmentType("accessory", "catchRate", 20, 5),
+            new NonStackable()
         ); 
 
         return fishingRod; 
@@ -112,7 +119,8 @@ public class ItemDatabase
             "Dont forget to replace the batteries soon...",
             "flashlight",
             1,
-            new EquipmentType("accessory", "vision", 50, 3)
+            new EquipmentType("accessory", "vision", 50, 3),
+            new NonStackable()
         ); 
 
         return flashlight; 
@@ -126,7 +134,8 @@ public class ItemDatabase
             "If only you had a chest to store your materials in",
             "log",
             17,
-            new MaterialType()
+            new MaterialType(),
+            new Stackable()
         );
 
         return wood; 
@@ -140,7 +149,8 @@ public class ItemDatabase
             "Your Dad will be happy you did some fishing",
             "carp",
             4,
-            new MaterialType()
+            new MaterialType(),
+            new Stackable()
         );
 
         return carp; 
@@ -154,7 +164,8 @@ public class ItemDatabase
             "Have you ever tried cooking an apple?",
             "foodApple",
             5,
-            new ConsumeableType("health", 2)
+            new ConsumeableType("health", 2),
+            new Stackable()
         );
 
         return apple;
@@ -168,7 +179,8 @@ public class ItemDatabase
             "Maybe save one to honor you mom :)",
             "foodBread",
             17,
-            new ConsumeableType("health", 10)
+            new ConsumeableType("health", 10),
+            new Stackable()
         );
 
         return bread; 
@@ -182,7 +194,8 @@ public class ItemDatabase
             "Your Dad will be proud :)",
             "foodFish",
             1,
-            new ConsumeableType("health", 20)
+            new ConsumeableType("health", 20),
+            new Stackable()
         );
 
         return cookedFish; 

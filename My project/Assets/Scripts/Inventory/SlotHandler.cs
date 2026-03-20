@@ -39,7 +39,11 @@ public class SlotHandler : MonoBehaviour
                 //set the sprite of the slot to the sprite we just loaded in and 
                 //change the alpha so that it is visible 
                 itemImage.sprite = loaded; 
-                itemImage.color = new Color(1f, 1f, 1f, 1f); 
+
+                //only refresh the alpha if it is not currently being dragged 
+                if (SlotInteractionHandler.GetDragGhost() == null) {
+                    itemImage.color = new Color(1f, 1f, 1f, 1f); 
+                }
                 
                 //if the amount of the item is 1 do not display the amount text
                 if (inventoryItems[i].quantity == 1) {
