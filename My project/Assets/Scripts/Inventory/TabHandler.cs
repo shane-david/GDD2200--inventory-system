@@ -228,7 +228,7 @@ public class TabHandler : MonoBehaviour
         if (item == null) return "Select an Item!"; 
 
         //otherwise get and return the item description of the item
-        return item.description; 
+        return item.name + ". " + item.description; 
         
     }
 
