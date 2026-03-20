@@ -1,3 +1,5 @@
+using UnityEditor;
+
 public class ItemDatabase
 {
     //-----------------------
@@ -114,5 +116,75 @@ public class ItemDatabase
         ); 
 
         return flashlight; 
+    }
+
+    public ItemBase CreateWood()
+    {
+        ItemBase wood = new(
+            "Wood",
+            "Picked up along your way, necessary for survival but SOO heavy",
+            "If only you had a chest to store your materials in",
+            "log",
+            17,
+            new MaterialType()
+        );
+
+        return wood; 
+    }
+
+    public ItemBase CreateCarp()
+    {
+        ItemBase carp = new(
+            "Carp",
+            "You caught a fish! Find a campfire to turn it into food",
+            "Your Dad will be happy you did some fishing",
+            "carp",
+            4,
+            new MaterialType()
+        );
+
+        return carp; 
+    }
+
+    public ItemBase CreateApple()
+    {
+        ItemBase apple = new(
+            "Apple",
+            "Found on a tree, light and easy to find but not that effective\nRight Click to Use",
+            "Have you ever tried cooking an apple?",
+            "foodApple",
+            5,
+            new ConsumeableType("health", 2)
+        );
+
+        return apple;
+    }
+
+    public ItemBase CreateBread()
+    {
+        ItemBase bread = new(
+            "Bread",
+            "You mom was so worried before you left she baked you 17 loaves of bread! Right Click to Use",
+            "Maybe save one to honor you mom :)",
+            "foodBread",
+            17,
+            new ConsumeableType("health", 10)
+        );
+
+        return bread; 
+    }
+
+    public ItemBase CreateCookedFish()
+    {
+        ItemBase cookedFish = new(
+            "Cooked Fish",
+            "You did it! Enjoy your meal!\nRight Click to Use",
+            "Your Dad will be proud :)",
+            "foodFish",
+            1,
+            new ConsumeableType("health", 20)
+        );
+
+        return cookedFish; 
     }
 }

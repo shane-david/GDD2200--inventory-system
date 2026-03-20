@@ -35,6 +35,12 @@ public class PlayerStatsMangager : MonoBehaviour
     {
         _statAttack += delta; 
         
+        //clamp it to make health if it goes over
+        if (_statAttack > _maxOut)
+        {
+            _statAttack = _maxOut; 
+        }
+
         //get new width of UI
         //depends on ration from health to max health 
         float newWidth = (_statAttack/_maxOut) * _barWidth; 
@@ -48,6 +54,12 @@ public class PlayerStatsMangager : MonoBehaviour
     {
         _statWeight += delta;  
 
+        //clamp it to make health if it goes over
+        if (_statWeight > _maxOut)
+        {
+            _statWeight = _maxOut; 
+        }
+
         //get new width of UI
         //depends on ration from health to max health 
         float newWidth = (_statWeight/_maxOut) * _barWidth; 
@@ -60,7 +72,13 @@ public class PlayerStatsMangager : MonoBehaviour
     public void changeHealth(int delta)
     {
         _statHealth += delta; 
-
+        
+        //clamp it to max health if it goes over
+        if (_statHealth > _maxOut)
+        {
+            _statHealth = _maxOut; 
+        }
+        
         //get new width of UI
         //depends on ration from health to max health 
         float newWidth = (_statHealth/_maxOut) * _barWidth; 

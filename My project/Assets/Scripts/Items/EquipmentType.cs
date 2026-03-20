@@ -40,7 +40,7 @@ public class EquipmentType : IItemType
     //changes stats based off passed in direction
     public void ChangeStats(UseContext ctx, int direction)
     {
-          //change the stat based off of what it is 
+        //change the stat based off of what it is 
         switch (StatToChange)
         {
             case "health":

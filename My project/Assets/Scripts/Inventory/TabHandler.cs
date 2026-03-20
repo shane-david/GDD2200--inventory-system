@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ public class TabHandler : MonoBehaviour
     [SerializeField] private SlotHandler _clothingSlots;
     [SerializeField] private SlotHandler _equipmentSlots;
     [SerializeField] private SlotHandler _accessorySlots;
+    [SerializeField] private SlotHandler _suppliesSlots;
+    [SerializeField] private SlotHandler _foodSlots;
 
 
     //assigned in the insepctor, the parent object of all the tabs so that they can be turned on and off
@@ -58,6 +61,8 @@ public class TabHandler : MonoBehaviour
         _allSections.Add("clothing", _playerInventory.GetClothingSection()); 
         _allSections.Add("equipment", _playerInventory.GetEquipmentSection()); 
         _allSections.Add("Tools", _playerInventory.GetAccessorySection()); 
+        _allSections.Add("Supplies", _playerInventory.GetSuppliesSection()); 
+        _allSections.Add("Food", _playerInventory.GetFoodSection()); 
 
     }
 
@@ -114,6 +119,7 @@ public class TabHandler : MonoBehaviour
             case "supplies":
 
                 //add inventory for supplies tab
+                _currentTab.Add(_playerInventory.GetSuppliesSection(), _suppliesSlots); 
 
                 //size up supplies tab button
                 _suppliesButton.sizeDelta = new Vector2(90,40); 
@@ -125,6 +131,7 @@ public class TabHandler : MonoBehaviour
             case "food":
 
                 //add inventory for food tab
+                _currentTab.Add(_playerInventory.GetFoodSection(), _foodSlots); 
 
                 //size up food tab button
                 _foodButton.sizeDelta = new Vector2(90,40);
@@ -163,6 +170,25 @@ public class TabHandler : MonoBehaviour
         //instead of passin in the section string, it searches the dictionary and sends in the actual section 
         return _playerInventory.Unequip(prevIndex, _allSections[newSection], newIndex); 
     }
+
+    //this checks if the item is a consumeable and it can be used, then it calles the use 
+    //method in that IItemType instance, it returns whether the consumption was valid 
+    public bool Consume(string section, int index)
+    {
+        //get the item and its ConsumeableType
+        ItemBase item = _allSections[section].GetItem(index); 
+        ConsumeableType consume = item.GetItemType() as ConsumeableType; 
+
+        //if the consumeable type is valid add the item to the use context and call use 
+        if (consume != null)
+        {   
+            _playerInventory.useCtx.item = item; 
+            consume.Use(_playerInventory.useCtx); 
+        }
+
+        return false; 
+    }
+
     //--------
     //getters
     //--------

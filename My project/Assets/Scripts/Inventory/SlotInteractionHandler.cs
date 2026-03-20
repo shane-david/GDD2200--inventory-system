@@ -1,7 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
 
     //the slot outline so that it can activate and deactivate it 
@@ -65,6 +66,24 @@ public class SlotInteractionHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         //outline 
         slotOutline.SetActive(true); 
 
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        
+        //if it was a right click 
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            
+            //get the slot information 
+            SlotInteractionHandler targetSlot = eventData.pointerCurrentRaycast.gameObject?.GetComponent<SlotInteractionHandler>();
+
+            //if it is not null, tell the tab handler to find the item and use it, error checking in tab handler
+            if (targetSlot != null)
+            {
+                _tabHandler.Consume(targetSlot.SlotSection, targetSlot.SlotIndex); 
+            }
+        }
     }
 
     //when the raycast leaves the slot disable the outline for user feedback

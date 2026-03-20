@@ -5,24 +5,23 @@ public class PlayerInventory
 {
 
     //ItemDatabase instance so that we can create items 
-    ItemDatabase _itemDatabase; 
+    private ItemDatabase _itemDatabase; 
 
     //instances of Inventory representing the different sections of the player inventory
-    Inventory _weapons; 
-    Inventory _clothing; 
-    Inventory _accessories; 
-
-    //list representing the sections that are in the current tabe
-    List<Inventory> _currentTab = new(); 
+    private Inventory _weapons; 
+    private Inventory _clothing; 
+    private Inventory _accessories; 
+    private Inventory _materials; 
+    private Inventory _food; 
 
     //instance of equipment manager to keep track of the equipment tab
-    PlayerEquipmentManager _equipmentManager = new(); 
+    private PlayerEquipmentManager _equipmentManager = new(); 
 
     //instance of the stats manager to keep track of the stats tab
-    PlayerStatsMangager _statsManager; 
+    private PlayerStatsMangager _statsManager; 
 
     //use context to pass into the use methods for items
-    UseContext useCtx; 
+    public UseContext useCtx; 
 
     //-------------
     //constructors
@@ -34,6 +33,8 @@ public class PlayerInventory
         _weapons  = new Inventory("Weapons", 5); 
         _clothing = new Inventory("Clothing", 5); 
         _accessories = new Inventory("Tools", 15); 
+        _materials = new Inventory("Supplies", 15); 
+        _food = new Inventory("Food", 15); 
         _itemDatabase = new ItemDatabase(); 
         BuildStartingItems(); 
 
@@ -42,7 +43,8 @@ public class PlayerInventory
 
         //build the use ctx
         useCtx = new() {
-            stats = _statsManager
+            stats = _statsManager,
+            item = null
         };
             
         
@@ -240,6 +242,15 @@ public class PlayerInventory
         _accessories.AddItem(_itemDatabase.CreateFishingRod(), 12);
         _accessories.AddItem(_itemDatabase.CreateFlashlight(), 4); 
 
+        //starting items for materials
+        _materials.AddItem(_itemDatabase.CreateWood(), 0);
+        _materials.AddItem(_itemDatabase.CreateCarp(), 1); 
+
+        //starting items for food
+        _food.AddItem(_itemDatabase.CreateApple(), 0);
+        _food.AddItem(_itemDatabase.CreateBread(), 1);
+        _food.AddItem(_itemDatabase.CreateCookedFish(), 2); 
+
     }
 
     //--------
@@ -251,6 +262,12 @@ public class PlayerInventory
     public Inventory GetClothingSection() => _clothing; 
 
     public Inventory GetAccessorySection() => _accessories; 
+
+    public Inventory GetSuppliesSection() => _materials; 
+
+    public Inventory GetFoodSection() => _food; 
+
+    public UseContext GetUseContext() => useCtx; 
 
     public Inventory GetEquipmentSection()
     {
