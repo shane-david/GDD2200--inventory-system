@@ -28,4 +28,7 @@
 * Error message for dragging to an inproper slot only remains until the mouse does something (enter a slot, leave a slot) to trigger another IPointer method. 
 * Inventory Capacity is hardcoded and therefore static so there is no way to change how much an inventory can hold depending on the equipped backpack. 
 * Code that was written later in the project was done so with the intent of getting it working and could have much better OOP design to limit conditionals and references being passed between multiple objects. 
-* Many passed in strings representing things like grid names, tab names, ect. could be replaced with enums for better code and avoidance of null reference errors as a result of passing in the incorrect string. 
+* Many passed in strings representing things like grid names, tab names, ect. could be replaced with enums for better code and avoidance of null reference errors as a result of passing in the incorrect string.
+
+>[!Note]
+**This repository was archived after the completion of GDD2200 in the Spring 2026 semester**
